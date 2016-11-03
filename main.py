@@ -34,7 +34,7 @@ jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
 flow = client.flow_from_clientsecrets(
     'json/client_secret.json',
     scope='https://www.googleapis.com/auth/drive.metadata.readonly',
-    redirect_uri='http://team-sso.appspot.com/oauth2callback')
+    redirect_uri='http://localhost:10080/oauth2callback')
 
 class Handler(webapp2.RequestHandler):
     def write(self, *a, **kw):
