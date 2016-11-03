@@ -23,6 +23,7 @@ sys.path.insert(0, 'lib/')
 from apiclient.discovery import build
 from oauth2client import client
 import httplib2
+import requests
 
 # Global variables
 # Jinja2 global declaration
@@ -52,6 +53,8 @@ class MainHandler(Handler):
         signIn = self.request.get('signIn')
         if(signIn == 'google'):
             self.redirect('/google')
+        if(signIn == 'yammer'):
+            self.redirect('/yammer')
 
 
 class GoogleHandler(Handler):
@@ -70,8 +73,24 @@ class GoogleOAuthHandler(Handler):
         files = drive_service.files().list().execute()
         self.render('google/index.html', files=files)
 
+class YammerHandler(Handler):
+    def get(self):
+        self.render('yammer/transition.html')
+    def post(self):
+        self.redirect('https://www.yammer.com/oauth2/authorize?client_id=gitpw9j5yrNRzTvlPTsj3g&response_type=code&redirect_uri=http://localhost:10080/yammercallback')
+
+class YammerOAuthHandler(Handler):
+    def get(self):
+        auth_code = self.request.get('code')
+        r = requests.post('https://www.yammer.com/oauth2/access_token', data={'client_id' : 'gitpw9j5yrNRzTvlPTsj3g', 'client_secret' : 'qoDl7g6qaTV2ATPM9rAFRKLIHONK1lLnGBVcolBsvQ', 'code' : auth_code, 'grant_type' : 'authorization_code'})
+        if(r.status_code == 200):
+            self.render('yammer/index.html')
+
+
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/google', GoogleHandler),
-    ('/oauth2callback', GoogleOAuthHandler)
+    ('/oauth2callback', GoogleOAuthHandler),
+    ('/yammer', YammerHandler),
+    ('/yammercallback', YammerOAuthHandler)
 ], debug=True)
