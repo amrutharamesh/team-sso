@@ -27,6 +27,7 @@ import requests
 import urllib
 import json
 import urlparse
+from requests.auth import HTTPBasicAuth
 
 # Global variables
 # Jinja2 global declaration
@@ -68,6 +69,8 @@ class MainHandler(Handler):
             self.redirect('/formstack')
         if(signIn == 'github'):
             self.redirect('/github')
+        if(signIn == 'reddit'):
+            self.redirect('/reddit')
 
 
 class GoogleHandler(Handler):
@@ -176,6 +179,22 @@ class GithubOAuthHandler(Handler):
         if(data['access_token'] is not None):
             self.render('github/index.html')
 
+class RedditHandler(Handler):
+    def get(self):
+        self.render('reddit/transition.html')
+    def post(self):
+        self.redirect('https://www.reddit.com/api/v1/authorize?client_id=RY0F0CYh3LcvVw&response_type=code&state=security_token&redirect_uri=http://localhost:10080/redditcallback&duration=permanent&scope=edit%20flair')
+
+class RedditOAuthHandler(Handler):
+    def get(self):
+        auth_code = self.request.get('code')
+        r = requests.post('https://www.reddit.com/api/v1/access_token', data={'code' : auth_code, 'redirect_uri' : 'http://localhost:10080/redditcallback', 'grant_type' : 'authorization_code'}, auth=HTTPBasicAuth('RY0F0CYh3LcvVw', 'zuwA8gSM5Yz-MzSoFywqV7oBbkQ'))
+        data = r.json()
+        # self.response.out.write(r.text)
+        if(data['access_token'] is not None):
+            self.render('reddit/index.html')
+
+
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/google', GoogleHandler),
@@ -191,5 +210,7 @@ app = webapp2.WSGIApplication([
     ('/formstack', FormstackHandler),
     ('/formstackcallback', FormstackOAuthHandler),
     ('/github', GithubHandler),
-    ('/githubcallback', GithubOAuthHandler)
+    ('/githubcallback', GithubOAuthHandler),
+    ('/reddit', RedditHandler),
+    ('/redditcallback', RedditOAuthHandler)
 ], debug=True)
