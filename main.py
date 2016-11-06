@@ -61,6 +61,8 @@ class MainHandler(Handler):
             self.redirect('/zendesk')
         if(signIn == 'box'):
             self.redirect('/box')
+        if(signIn == 'formstack'):
+            self.redirect('/formstack')
 
 
 class GoogleHandler(Handler):
@@ -134,6 +136,19 @@ class BoxOAuthHandler(Handler):
         if(r.status_code == 200):
             self.render('box/index.html')
 
+class FormstackHandler(Handler):
+    def get(self):
+        self.render('formstack/transition.html')
+    def post(self):
+        self.redirect('https://www.formstack.com/api/v2/oauth2/authorize?client_id=13697&redirect_uri=http%3A%2F%2Flocalhost%3A10080%2Fformstackcallback&response_type=code')
+
+class FormstackOAuthHandler(Handler):
+    def get(self):
+        auth_code = self.request.get('code')
+        r = requests.post('https://www.formstack.com/api/v2/oauth2/token', data={'client_id' : '13697', 'client_secret' : '8bd4c955e9', 'code' : auth_code, 'redirect_uri' : 'http://localhost:10080/formstackcallback', 'grant_type' : 'authorization_code'})
+        if(r.status_code == 200):
+            self.render('formstack/index.html')
+
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/google', GoogleHandler),
@@ -145,5 +160,7 @@ app = webapp2.WSGIApplication([
     ('/zendesk', ZendeskHandler),
     ('/zendeskcallback', ZendeskOAuthHandler),
     ('/box', BoxHandler),
-    ('/boxcallback', BoxOAuthHandler)
+    ('/boxcallback', BoxOAuthHandler),
+    ('/formstack', FormstackHandler),
+    ('/formstackcallback', FormstackOAuthHandler)
 ], debug=True)
