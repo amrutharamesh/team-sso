@@ -55,6 +55,8 @@ class MainHandler(Handler):
             self.redirect('/google')
         if(signIn == 'yammer'):
             self.redirect('/yammer')
+        if(signIn == 'basecamp'):
+            self.redirect('/basecamp')
 
 
 class GoogleHandler(Handler):
@@ -86,11 +88,26 @@ class YammerOAuthHandler(Handler):
         if(r.status_code == 200):
             self.render('yammer/index.html')
 
+class BasecampHandler(Handler):
+    def get(self):
+        self.render('basecamp/transition.html')
+    def post(self):
+        self.redirect('https://launchpad.37signals.com/authorization/new?type=web_server&client_id=7608826c852c97260eac10fe40fc8a8f00506387&redirect_uri=http://localhost:10080/basecampcallback')
+
+
+class BasecampOAuthHandler(Handler):
+    def get(self):
+        auth_code = self.request.get('code')
+        r = requests.post('https://launchpad.37signals.com/authorization/token', data={'type': 'web_server', 'client_id' : '7608826c852c97260eac10fe40fc8a8f00506387', 'client_secret' : 'f2a62818a2909e5905c3510052eea2f168ea9a40', 'code' : auth_code, 'redirect_uri' : 'http://localhost:10080/basecampcallback'})
+        if(r.status_code == 200):
+            self.render('basecamp/index.html')
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/google', GoogleHandler),
     ('/oauth2callback', GoogleOAuthHandler),
     ('/yammer', YammerHandler),
-    ('/yammercallback', YammerOAuthHandler)
+    ('/yammercallback', YammerOAuthHandler),
+    ('/basecamp', BasecampHandler),
+    ('/basecampcallback', BasecampOAuthHandler)
 ], debug=True)
