@@ -71,6 +71,8 @@ class MainHandler(Handler):
             self.redirect('/github')
         if(signIn == 'reddit'):
             self.redirect('/reddit')
+        if(signIn == 'yandex'):
+            self.redirect('/yandex')
 
 
 class GoogleHandler(Handler):
@@ -194,6 +196,21 @@ class RedditOAuthHandler(Handler):
         if(data['access_token'] is not None):
             self.render('reddit/index.html')
 
+class YandexHandler(Handler):
+    def get(self):
+        self.render('yandex/transition.html')
+    def post(self):
+        self.redirect('https://oauth.yandex.com/authorize?response_type=code&client_id=512dfa57910844418d5075038406f1cc')
+
+class YandexOAuthHandler(Handler):
+    def get(self):
+        auth_code = self.request.get('code')
+        r = requests.post('https://oauth.yandex.com/token', data={'client_id' : '512dfa57910844418d5075038406f1cc', 'client_secret' : '7f80d86eda454298b488d9938f133e1e', 'code' : auth_code, 'grant_type' : 'authorization_code'})
+        data = r.json()
+        # self.response.out.write(data)
+        if(data['access_token'] is not None):
+            self.render('yandex/index.html')
+
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
@@ -212,5 +229,7 @@ app = webapp2.WSGIApplication([
     ('/github', GithubHandler),
     ('/githubcallback', GithubOAuthHandler),
     ('/reddit', RedditHandler),
-    ('/redditcallback', RedditOAuthHandler)
+    ('/redditcallback', RedditOAuthHandler),
+    ('/yandex', YandexHandler),
+    ('/yandexcallback', YandexOAuthHandler)
 ], debug=True)
