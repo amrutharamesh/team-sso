@@ -59,6 +59,8 @@ class MainHandler(Handler):
             self.redirect('/basecamp')
         if(signIn == 'zendesk'):
             self.redirect('/zendesk')
+        if(signIn == 'box'):
+            self.redirect('/box')
 
 
 class GoogleHandler(Handler):
@@ -118,6 +120,19 @@ class ZendeskOAuthHandler(Handler):
         if(r.status_code == 200):
             self.render('zendesk/index.html')
 
+class BoxHandler(Handler):
+    def get(self):
+        self.render('box/transition.html')
+    def post(self):
+        self.redirect('https://account.box.com/api/oauth2/authorize?response_type=code&redirect_uri=http://localhost:10080/boxcallback&client_id=nip8kyd6cqy4a78ze9dcc05lbjhwwv5f&state=security_token')
+
+
+class BoxOAuthHandler(Handler):
+    def get(self):
+        auth_code = self.request.get('code')
+        r = requests.post('https://api.box.com/oauth2/token', data={'client_id' : 'nip8kyd6cqy4a78ze9dcc05lbjhwwv5f', 'client_secret' : 'zGRMnFayAiDlGRZTKVqEbrvOZWw9SlFZ', 'code' : auth_code, 'redirect_uri' : 'http://localhost:10080/boxcallback', 'grant_type' : 'authorization_code'})
+        if(r.status_code == 200):
+            self.render('box/index.html')
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
@@ -128,5 +143,7 @@ app = webapp2.WSGIApplication([
     ('/basecamp', BasecampHandler),
     ('/basecampcallback', BasecampOAuthHandler),
     ('/zendesk', ZendeskHandler),
-    ('/zendeskcallback', ZendeskOAuthHandler)
+    ('/zendeskcallback', ZendeskOAuthHandler),
+    ('/box', BoxHandler),
+    ('/boxcallback', BoxOAuthHandler)
 ], debug=True)
