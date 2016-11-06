@@ -57,6 +57,8 @@ class MainHandler(Handler):
             self.redirect('/yammer')
         if(signIn == 'basecamp'):
             self.redirect('/basecamp')
+        if(signIn == 'zendesk'):
+            self.redirect('/zendesk')
 
 
 class GoogleHandler(Handler):
@@ -102,6 +104,21 @@ class BasecampOAuthHandler(Handler):
         if(r.status_code == 200):
             self.render('basecamp/index.html')
 
+class ZendeskHandler(Handler):
+    def get(self):
+        self.render('zendesk/transition.html')
+    def post(self):
+        self.redirect('https://amrutha.zendesk.com/oauth/authorizations/new?response_type=code&redirect_uri=http://localhost:10080/zendeskcallback&client_id=team_sso&scope=read%20write')
+
+
+class ZendeskOAuthHandler(Handler):
+    def get(self):
+        auth_code = self.request.get('code')
+        r = requests.post('https://amrutha.zendesk.com/oauth/tokens', data={'scope': 'read', 'client_id' : 'team_sso', 'client_secret' : '116f699b09f9c987c8140745bd1c3bd9bd02360097db9dc7ba8fde114e54c402', 'code' : auth_code, 'redirect_uri' : 'http://localhost:10080/zendeskcallback', 'grant_type' : 'authorization_code'})
+        if(r.status_code == 200):
+            self.render('zendesk/index.html')
+
+
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/google', GoogleHandler),
@@ -109,5 +126,7 @@ app = webapp2.WSGIApplication([
     ('/yammer', YammerHandler),
     ('/yammercallback', YammerOAuthHandler),
     ('/basecamp', BasecampHandler),
-    ('/basecampcallback', BasecampOAuthHandler)
+    ('/basecampcallback', BasecampOAuthHandler),
+    ('/zendesk', ZendeskHandler),
+    ('/zendeskcallback', ZendeskOAuthHandler)
 ], debug=True)
