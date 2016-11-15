@@ -119,7 +119,9 @@ class VKOAuthHandler(Handler):
     def get(self):
         auth_code = self.request.get('code')
         r = requests.post('https://oauth.vk.com/access_token', data={'client_id' : '5726964', 'client_secret' : 'YqF10CUrcll3U5ZHueNr', 'redirect_uri': 'http://localhost:10080/VKcallback' , 'code' : auth_code})
-        if(r.status_code == 200):
+        data = r.json()
+        self.response.write(data)
+        if(data['access_token'] is not None):
             self.render('VK/index.html')
 
 class StripeHandler(Handler):
@@ -131,7 +133,7 @@ class StripeHandler(Handler):
 class StripeOAuthHandler(Handler):
     def get(self):
         auth_code = self.request.get('code')
-        r = requests.post('https://connect.stripe.com/oauth/token', data={'client_id' : 'ca_9YjV9yzfSkwAeyz1ImubH3xPZZM8srFv', 'client_secret' : 'sk_test_x6Wyh4IcFAe1sClkoHTI7oEp,'code' : auth_code, 'grant_type' : 'authorization_code'})
+        r = requests.post('https://connect.stripe.com/oauth/token', data={'client_id' : 'ca_9YjV9yzfSkwAeyz1ImubH3xPZZM8srFv', 'client_secret' : 'sk_test_x6Wyh4IcFAe1sClkoHTI7oEp','code' : auth_code, 'grant_type' : 'authorization_code'})
         if(r.status_code == 200):
             self.render('stripe/index.html')
 
@@ -251,8 +253,8 @@ app = webapp2.WSGIApplication([
     ('/yammercallback', YammerOAuthHandler),
     ('/VK', VKHandler),
     ('/VKcallback', VKOAuthHandler),
-    ('/stripe', StripHandler),
-    ('/stripecallback', StripeOAuthHandler)
+    ('/stripe', StripeHandler),
+    ('/stripecallback', StripeOAuthHandler),
     ('/basecamp', BasecampHandler),
     ('/basecampcallback', BasecampOAuthHandler),
     ('/zendesk', ZendeskHandler),
