@@ -55,7 +55,10 @@ class MainHandler(Handler):
             self.redirect('/google')
         if(signIn == 'yammer'):
             self.redirect('/yammer')
-
+        if(signIn == 'VK'):
+            self.redirect('/VK')
+        if(signIn == 'stripe'):
+            self.redirect('/stripe')
 
 class GoogleHandler(Handler):
     def get(self):
@@ -86,11 +89,40 @@ class YammerOAuthHandler(Handler):
         if(r.status_code == 200):
             self.render('yammer/index.html')
 
+class VKHandler(Handler):
+    def get(self):
+        self.render('VK/transition.html')
+    def post(self):
+        self.redirect('https://oauth.vk.com/authorize?client_id=5726964&display=page&redirect_uri=http://localhost:10080/VKcallback&scope=friends&response_type=token&v=5.60')
+
+class VKOAuthHandler(Handler):
+    def get(self):
+        auth_code = self.request.get('code')
+        r = requests.post('https://oauth.vk.com/access_token', data={'client_id' : '5726964', 'client_secret' : 'YqF10CUrcll3U5ZHueNr', 'redirect_uri': 'http://localhost:10080/VKcallback' , 'code' : auth_code})
+        if(r.status_code == 200):
+            self.render('VK/index.html')
+
+class StripeHandler(Handler):
+    def get(self):
+        self.render('stripe/transition.html')
+    def post(self):
+        self.redirect('https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_9YjV9yzfSkwAeyz1ImubH3xPZZM8srFv&scope=read_only')
+
+class StripeOAuthHandler(Handler):
+    def get(self):
+        auth_code = self.request.get('code')
+        r = requests.post('https://connect.stripe.com/oauth/token', data={'client_id' : 'ca_9YjV9yzfSkwAeyz1ImubH3xPZZM8srFv', 'client_secret' : 'sk_test_x6Wyh4IcFAe1sClkoHTI7oEp,'code' : auth_code, 'grant_type' : 'authorization_code'})
+        if(r.status_code == 200):
+            self.render('stripe/index.html')
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/google', GoogleHandler),
     ('/oauth2callback', GoogleOAuthHandler),
     ('/yammer', YammerHandler),
-    ('/yammercallback', YammerOAuthHandler)
+    ('/yammercallback', YammerOAuthHandler),
+    ('/VK', VKHandler),
+    ('/VKcallback', VKOAuthHandler),
+    ('/stripe', StripHandler),
+    ('/stripecallback', StripeOAuthHandler)
 ], debug=True)
