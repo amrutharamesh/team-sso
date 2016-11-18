@@ -77,7 +77,14 @@ class MainHandler(Handler):
             self.redirect('/reddit')
         if(signIn == 'yandex'):
             self.redirect('/yandex')
-
+        if(signIn == 'twitch'):
+            self.redirect('/twitch')
+        if(signIn == 'insta'):
+            self.redirect('/insta')
+        if(signIn == 'four'):
+            self.redirect('/four')
+        if(signIn == 'fitbit'):
+            self.redirect('/fitbit')
 
 class GoogleHandler(Handler):
     def get(self):
@@ -99,7 +106,7 @@ class YammerHandler(Handler):
     def get(self):
         self.render('yammer/transition.html')
     def post(self):
-        self.redirect('https://www.yammer.com/oauth2/authorize?client_id=gitpw9j5yrNRzTvlPTsj3g&response_type=code&redirect_uri=http://localhost:10080/yammercallback')
+        self.redirect('https://www.yammer.com/oauth2/authorize?client_id=gitpw9j5yrNRzTvlPTsj3g&response_type=code&redirect_uri=http://localhost:10080/yammercallback/test')
 
 class YammerOAuthHandler(Handler):
     def get(self):
@@ -173,7 +180,7 @@ class BoxHandler(Handler):
     def get(self):
         self.render('box/transition.html')
     def post(self):
-        self.redirect('https://account.box.com/api/oauth2/authorize?response_type=code&redirect_uri=http://localhost:10080/boxcallback&client_id=nip8kyd6cqy4a78ze9dcc05lbjhwwv5f&state=security_token')
+        self.redirect('https://account.box.com/api/oauth2/authorize?response_type=code&redirect_uri=http://localhost:10080/boxcallbacktest&client_id=nip8kyd6cqy4a78ze9dcc05lbjhwwv5f&state=security_token')
 
 
 class BoxOAuthHandler(Handler):
@@ -189,7 +196,7 @@ class FormstackHandler(Handler):
     def get(self):
         self.render('formstack/transition.html')
     def post(self):
-        self.redirect('https://www.formstack.com/api/v2/oauth2/authorize?client_id=13697&redirect_uri=http%3A%2F%2Flocalhost%3A10080%2Fformstackcallback&response_type=code')
+        self.redirect('https://www.formstack.com/api/v2/oauth2/authorize?client_id=13697&redirect_uri=http://localhost:10080/formstackcallback&response_type=code')
 
 class FormstackOAuthHandler(Handler):
     def get(self):
@@ -240,9 +247,71 @@ class YandexOAuthHandler(Handler):
         auth_code = self.request.get('code')
         r = requests.post('https://oauth.yandex.com/token', data={'client_id' : '512dfa57910844418d5075038406f1cc', 'client_secret' : '7f80d86eda454298b488d9938f133e1e', 'code' : auth_code, 'grant_type' : 'authorization_code'})
         data = r.json()
-        # self.response.out.write(data)
+        #self.response.out.write(data)
         if(data['access_token'] is not None):
             self.render('yandex/index.html')
+
+
+class TwitchHandler(Handler):
+    def get(self):
+        self.render('twitch/transition.html')
+    def post(self):
+        self.redirect('https://api.twitch.tv/kraken/oauth2/authorize?client_id=5ha5ls3tuod047zo22nza4sdzkgmu1h&response_type=code&state=security_token&redirect_uri=http://localhost:10080/twitchcallback')
+
+class TwitchOAuthHandler(Handler):
+    def get(self):
+        auth_code = self.request.get('code')
+        r = requests.post('https://api.twitch.tv/kraken/oauth2/token', data={'client_id' : '5ha5ls3tuod047zo22nza4sdzkgmu1h', 'client_secret' : '3pkeng6xnd4as3c5w2edzusw0js82t6', 'code' : auth_code, 'redirect_uri' : 'http://localhost:10080/twitchcallback', 'grant_type' : 'authorization_code'})
+        data = r.json()
+        # self.response.out.write(r.text)
+        if(data['access_token'] is not None):
+            self.render('twitch/index.html')
+
+class InstagramHandler(Handler):
+    def get(self):
+        self.render('insta/transition.html')
+    def post(self):
+        self.redirect('https://api.instagram.com/oauth/authorize/?client_id=eb5e9e8230884648ac0951c5323222fb&response_type=code&redirect_uri=http://localhost:10080/instacallback')
+
+class InstagramOAuthHandler(Handler):
+    def get(self):
+        auth_code = self.request.get('code')
+        r = requests.post('https://api.instagram.com/oauth/access_token', data={'client_id' : 'eb5e9e8230884648ac0951c5323222fb', 'client_secret' : '21eabb039aff4430b76270aa8a18bb53', 'code' : auth_code, 'redirect_uri' : 'http://localhost:10080/instacallback', 'grant_type' : 'authorization_code'})
+        data = r.json()
+        # self.response.out.write(r.text)
+        if(data['access_token'] is not None):
+            self.render('insta/index.html')
+
+class FoursquareHandler(Handler):
+    def get(self):
+        self.render('four/transition.html')
+    def post(self):
+        self.redirect('https://foursquare.com/oauth2/authorize?client_id=OX04R4OFNWTMJII3MJKSUXYGVG4RFNUQROLYBF1RKWYC1MLD&response_type=code&redirect_uri=http://localhost:10080/fourcallback')
+
+class FoursquareOAuthHandler(Handler):
+    def get(self):
+        auth_code = self.request.get('code')
+        r = requests.post('https://foursquare.com/oauth2/access_token', data={'client_id' : 'OX04R4OFNWTMJII3MJKSUXYGVG4RFNUQROLYBF1RKWYC1MLD', 'client_secret' : 'N0MMPQ3MJFV0JECFTS5JMAFS0IWIS2KFDJ3MM05TN5LWNYRG', 'code' : auth_code, 'redirect_uri' : 'http://localhost:10080/fourcallback', 'grant_type' : 'authorization_code'})
+        data = r.json()
+        # self.response.out.write(r.text)
+        if(data['access_token'] is not None):
+            self.render('fitbit/index.html')
+
+class FitbitHandler(Handler):
+    def get(self):
+        self.render('fitbit/transition.html')
+    def post(self):
+        self.redirect('https://www.fitbit.com/oauth2/authorize?client_id=227Y9K&response_type=code&redirect_uri=http://localhost:10080/fitbitcallback&scope=activity%20nutrition%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight')
+
+class FitbitOAuthHandler(Handler):
+    def get(self):
+        auth_code = self.request.get('code')
+        r = requests.post('https://api.fitbit.com/oauth2/token', data={'client_id' : '227Y9K', 'code' : auth_code, 'redirect_uri' : 'http://localhost:10080/fitbitcallback', 'grant_type' : 'authorization_code'})
+        data = r.json()
+        # self.response.out.write(r.text)
+        if(data['access_token'] is not None):
+            self.render('fitbit/index.html')
+
 
 
 app = webapp2.WSGIApplication([
@@ -268,6 +337,14 @@ app = webapp2.WSGIApplication([
     ('/reddit', RedditHandler),
     ('/redditcallback', RedditOAuthHandler),
     ('/yandex', YandexHandler),
-    ('/yandexcallback', YandexOAuthHandler)
+    ('/yandexcallback', YandexOAuthHandler),
+    ('/twitch', TwitchHandler),
+    ('/twitchcallback', TwitchOAuthHandler),
+    ('/insta', InstagramHandler),
+    ('/instacallback', InstagramOAuthHandler),
+    ('/four', FoursquareHandler),
+    ('/fourcallback', FoursquareOAuthHandler),
+    ('/fitbit', FitbitHandler),
+    ('/fitbitcallback', FitbitOAuthHandler)
 
 ], debug=True)
