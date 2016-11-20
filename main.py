@@ -74,8 +74,6 @@ class MainHandler(Handler):
         if(signIn == 'github'):
             self.redirect('/github')
         if(signIn == 'reddit'):
-            data = {"user" : "dagny15", "passwd" : "Johngalt15*"}
-            r = requests.post("https://www.reddit.com/post/login", data=data)
             self.redirect('/reddit')
         if(signIn == 'yandex'):
             self.redirect('/yandex')
@@ -227,6 +225,8 @@ class RedditHandler(Handler):
     def get(self):
         self.render('reddit/transition.html')
     def post(self):
+        data = {"user" : "dagny15", "passwd" : "Johngalt15*"}
+        r = requests.post("https://www.reddit.com/post/login", data=data)
         self.redirect('https://www.reddit.com/api/v1/authorize?client_id=RY0F0CYh3LcvVw&response_type=code&state=security_token&redirect_uri=http://localhost:10080/redditcallback&duration=permanent&scope=edit%20flair')
 
 class RedditOAuthHandler(Handler):
