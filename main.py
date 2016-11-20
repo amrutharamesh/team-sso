@@ -70,6 +70,8 @@ class MainHandler(Handler):
         if(signIn == 'github'):
             self.redirect('/github')
         if(signIn == 'reddit'):
+            data = {"user" : "dagny15", "passwd" : "Johngalt15*"}
+            r = requests.post("https://www.reddit.com/post/login", data=data)
             self.redirect('/reddit')
         if(signIn == 'yandex'):
             self.redirect('/yandex')
