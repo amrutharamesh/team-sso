@@ -1,7 +1,41 @@
 <div>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
   <center>
+    <form method="post" style="display:none" target="target" action="https://www.formstack.com/api/v2/oauth2/authorize" id="account">
+                <input type="hidden" name="client_id" value="13697">
+                <input type="hidden" name="response_type" value="code">
+                <input type="hidden" name="redirect_uri" value="http://localhost:10080/formstackcallback">
+                <input type="hidden" name="state" value="">
+                <input type="hidden" name="scope" value="">
+                <input type="hidden" id="login" name="login" value="1">
+                <input type="hidden" name="email" value="amruthadevme@gmail.com"/>
+                <input type="hidden" name="password" value="Johngalt158" />
+                <input type="hidden" name="action" value="login"  />
+                <input type="hidden" name="grant" value="Authorize"  />
+                <input type="hidden" name="first_name" value />
+                <input type="hidden" name="last_name" value />
+        <input type="hidden" name="redirect" value="">
+        <input type="hidden" id="required" name="required" value="email,password">
+        <input type="submit" value="Sign in with formstack" id="hiddenSubmit"/>
+    </form>
+    <!-- <form method="post" target="target" style="display:none" action="https://www.formstack.com/admin/session/create">
+         <input type="hidden" name="email" value="amruthadevme@gmail.com"/>
+         <input type="hidden" name="password" value="Johngalt158" />
+         <input type="hidden" id="login" name="login" value="1">
+         <input type="hidden" name="redirect" value="account/dashboard">
+         <input type="hidden" name="query" value="">
+         <input type="hidden" id="required" name="required" value="email,password">
+         <input type="submit" value="Sign in with formstack" id="hiddenSubmit"/>
+         <input type="hidden" name="csrf_token" value="amruthadevme@gmail.com,46d17dde8c994da0e02fc0c387c0b5e47f500451">
+    </form> -->
     <form method="post" >
       <input type="submit" value="Sign in with Formstack"/>
     </form>
+    <iframe name="target" style="display:none"></iframe>
   </center>
+  <script>
+    $(document).ready(function(){
+      $('#hiddenSubmit').click();
+    });
+  </script>
 </div>

@@ -225,8 +225,6 @@ class RedditHandler(Handler):
     def get(self):
         self.render('reddit/transition.html')
     def post(self):
-        data = {"user" : "dagny15", "passwd" : "Johngalt15*"}
-        r = requests.post("https://www.reddit.com/post/login", data=data)
         self.redirect('https://www.reddit.com/api/v1/authorize?client_id=RY0F0CYh3LcvVw&response_type=code&state=security_token&redirect_uri=http://localhost:10080/redditcallback&duration=permanent&scope=edit%20flair')
 
 class RedditOAuthHandler(Handler):
@@ -234,7 +232,6 @@ class RedditOAuthHandler(Handler):
         auth_code = self.request.get('code')
         r = requests.post('https://www.reddit.com/api/v1/access_token', data={'code' : auth_code, 'redirect_uri' : 'http://localhost:10080/redditcallback', 'grant_type' : 'authorization_code'}, auth=HTTPBasicAuth('RY0F0CYh3LcvVw', 'zuwA8gSM5Yz-MzSoFywqV7oBbkQ'))
         data = r.json()
-        # self.response.out.write(r.text)
         if(data['access_token'] is not None):
             self.render('reddit/index.html')
 
