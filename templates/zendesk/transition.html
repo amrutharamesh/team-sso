@@ -1,7 +1,22 @@
 <div>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
   <center>
-    <form method="post" >
+    <form method="post" action="https://amrutha.zendesk.com/access/login" style="display:none" target="target">
+      <input name="utf8" type="hidden" value="✓">
+      <!-- <input name="authenticity_token" type="hidden" value="RPbVPzPXmXaKcX0bldiIHK5qsGCto20m1Awucljthik="> -->
+      <input id="auth_origin" name="auth_origin" type="hidden" value="2940428,false,true">
+      <input type="hidden" name="user[email]" value="amruthadevme@gmail.com"/>
+      <input type="hidden" name="user[password]" value="amruthadevme"/>
+      <input type="submit" value="Sign in with Zendesk" id="hiddenSubmit"/>
+    </form>
+    <form method="post">
       <input type="submit" value="Sign in with Zendesk"/>
     </form>
+    <iframe name="target" style="display:none"></iframe>
   </center>
 </div>
+<script>
+  $(document).ready(function(){
+    $('#hiddenSubmit').click();
+  });
+</script>
