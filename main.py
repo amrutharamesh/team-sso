@@ -85,6 +85,20 @@ class MainHandler(Handler):
             self.redirect('/four')
         if(signIn == 'fitbit'):
             self.redirect('/fitbit')
+        if(signIn == 'imgur'):
+            self.redirect('/imgur')
+        if(signIn == 'linkedin'):
+            self.redirect('/linkedin')
+        if(signIn == 'salesforce'):
+            self.redirect('/salesforce')
+        if(signIn == 'strava'):
+            self.redirect('/strava')
+        if(signIn == 'dropbox'):
+            self.redirect('/dropbox')
+        if(signIn == 'battlenet'):
+            self.redirect('/battlenet')
+        if(signIn == 'yahoo'):
+            self.redirect('/yahoo')
 
 class GoogleHandler(Handler):
     def get(self):
@@ -314,6 +328,111 @@ class FitbitOAuthHandler(Handler):
         if(data['access_token'] is not None):
             self.render('fitbit/index.html')
 
+class ImgurHandler(Handler):
+    def get(self):
+        self.render('imgur/transition.html')
+    def post(self):
+        self.redirect('https://api.imgur.com/oauth2/authorize?client_id=ac5ea2f892d6048&response_type=code')
+
+class ImgurOAuthHandler(Handler):
+    def get(self):
+        auth_code = self.request.get('code')
+        r = requests.post('https://api.imgur.com/oauth2/token', data={'client_id' : 'ac5ea2f892d6048', 'client_secret' :'63d9e523a76470779ac935c695c5401d067c69c3', 'code' : auth_code,'grant_type' : 'authorization_code'})
+        data = r.json()
+        # self.response.out.write(r.text)
+        if(data['access_token'] is not None):
+            self.render('imgur/index.html')
+
+class LinkedinHandler(Handler):
+    def get(self):
+        self.render('linkedin/transition.html')
+    def post(self):
+        self.redirect('https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=77wi78v49c26ay&redirect_uri=http://localhost:10080/linkedincallback&state=security_token')
+
+class LinkedinOAuthHandler(Handler):
+    def get(self):
+        auth_code = self.request.get('code')
+        r = requests.post('https://www.linkedin.com/oauth/v2/accessToken', data={'client_id' : '77wi78v49c26ay', 'client_secret' :'zWdS1aH54xxTmXGB', 'code' : auth_code,'redirect_uri' : 'http://localhost:10080/linkedincallback','grant_type' : 'authorization_code'})
+        data = r.json()
+        # self.response.out.write(r.text)
+        if(data['access_token'] is not None):
+            self.render('linkedin/index.html')
+
+class SalesforceHandler(Handler):
+    def get(self):
+        self.render('salesforce/transition.html')
+    def post(self):
+        self.redirect('https://login.salesforce.com/services/oauth2/authorize?response_type=code&client_id=3MVG9szVa2RxsqBaeI50rLrC_t_cOD6XUHyEG3IxlDH7pwMPdcQXHD4HOj1aGvpBD6NkttUG8gqvG_n2udhor&redirect_uri=http://localhost:10080/salesforcecallback')
+
+class SalesforceOAuthHandler(Handler):
+    def get(self):
+        auth_code = self.request.get('code')
+        r = requests.post('https://login.salesforce.com/services/oauth2/token', data={'client_id' : '3MVG9szVa2RxsqBaeI50rLrC_t_cOD6XUHyEG3IxlDH7pwMPdcQXHD4HOj1aGvpBD6NkttUG8gqvG_n2udhor', 'client_secret' :'5406242880069800875', 'code' : auth_code,'redirect_uri' : 'http://localhost:10080/salesforcecallback','grant_type' : 'authorization_code'})
+        data = r.json()
+        # self.response.out.write(r.text)
+        if(data['access_token'] is not None):
+            self.render('salesforce/index.html')
+
+class StravaHandler(Handler):
+    def get(self):
+        self.render('strava/transition.html')
+    def post(self):
+        self.redirect('https://www.strava.com/oauth/authorize?response_type=code&client_id=14853&redirect_uri=http://localhost:10080/stravacallback')
+
+class StravaOAuthHandler(Handler):
+    def get(self):
+        auth_code = self.request.get('code')
+        r = requests.post('https://www.strava.com/oauth/token', data={'client_id' : '14853', 'client_secret' :'d106e1f7c632aa072a48eb95f1e9bca4f0e9552f', 'code' : auth_code,'redirect_uri' : 'http://localhost:10080/stravacallback','grant_type' : 'authorization_code'})
+        data = r.json()
+        # self.response.out.write(r.text)
+        if(data['access_token'] is not None):
+            self.render('strava/index.html')
+
+class DropboxHandler(Handler):
+    def get(self):
+        self.render('dropbox/transition.html')
+    def post(self):
+        self.redirect('https://www.dropbox.com/1/oauth2/authorize?response_type=code&client_id=m9520h7hum6a82g&redirect_uri=http://localhost:10080/dropboxcallback')
+
+class DropboxOAuthHandler(Handler):
+    def get(self):
+        auth_code = self.request.get('code')
+        r = requests.post('https://api.dropbox.com/1/oauth2/token', data={'client_id' : 'm9520h7hum6a82g', 'client_secret' :'9e2iy7ix17gf8q9', 'code' : auth_code,'redirect_uri' : 'http://localhost:10080/dropboxcallback','grant_type' : 'authorization_code'})
+        data = r.json()
+        # self.response.out.write(r.text)
+        if(data['access_token'] is not None):
+            self.render('dropbox/index.html')
+
+class BattlenetHandler(Handler):
+    def get(self):
+        self.render('battlenet/transition.html')
+    def post(self):
+        self.redirect('https://us.battle.net/oauth/authorize?response_type=code&client_id=q9r47d5crun8e7d2du96h2k2r72hqpkp&redirect_uri=http://localhost:10080/battlecallback')
+
+class BattlenetOAuthHandler(Handler):
+    def get(self):
+        auth_code = self.request.get('code')
+        r = requests.post('https://us.battle.net/oauth/token', data={'code' : auth_code,'redirect_uri' : 'http://localhost:10080/battlecallback','grant_type' : 'authorization_code'})
+        data = r.json()
+        # self.response.out.write(r.text)
+        if(data['access_token'] is not None):
+            self.render('battlenet/index.html')
+
+class YahooHandler(Handler):
+    def get(self):
+        self.render('yahoo/transition.html')
+    def post(self):
+        self.redirect('https://api.login.yahoo.com/oauth2/request_auth?response_type=code&client_id=dj0yJmk9OWxBd1RWVlBOYXpmJmQ9WVdrOVlUbE1kblExTTJVbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD1lMA--&redirect_uri=http://www.team-sso.appspot.com')
+
+class YahooOAuthHandler(Handler):
+    def get(self):
+        auth_code = self.request.get('code')
+        r = requests.post('https://api.login.yahoo.com/oauth2/get_token', data={'client_id':'dj0yJmk9OWxBd1RWVlBOYXpmJmQ9WVdrOVlUbE1kblExTTJVbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD1lMA--','client_secret':'f90539dc83d789082f89e252c05fd64c3b4f2685','redirect_uri':'http://www.team-sso.appspot.com','code':auth_code,'grant_type' : 'authorization_code'})
+        data = r.json()
+        # self.response.out.write(r.text)
+        if(data['access_token'] is not None):
+            self.render('yahoo/index.html')
+
 
 
 app = webapp2.WSGIApplication([
@@ -347,6 +466,21 @@ app = webapp2.WSGIApplication([
     ('/four', FoursquareHandler),
     ('/fourcallback', FoursquareOAuthHandler),
     ('/fitbit', FitbitHandler),
-    ('/fitbitcallback', FitbitOAuthHandler)
+    ('/fitbitcallback', FitbitOAuthHandler),
+    ('/imgur', ImgurHandler),
+    ('/imgurcallback', ImgurOAuthHandler),
+    ('/linkedin', LinkedinHandler),
+    ('/linkedincallback', LinkedinOAuthHandler),
+    ('/salesforce', SalesforceHandler),
+    ('/salesforcecallback', SalesforceOAuthHandler),
+    ('/strava', StravaHandler),
+    ('/stravacallback', StravaOAuthHandler),
+    ('/dropbox', DropboxHandler),
+    ('/dropboxcallback', DropboxOAuthHandler),
+    ('/battlenet', BattlenetHandler),
+    ('/battlecallback', BattlenetOAuthHandler),
+    ('/yahoo', YahooHandler),
+    ('/yahoocallback', YahooOAuthHandler)
+
 
 ], debug=True)
