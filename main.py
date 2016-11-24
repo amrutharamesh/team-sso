@@ -194,7 +194,7 @@ class BoxHandler(Handler):
     def get(self):
         self.render('box/transition.html')
     def post(self):
-        self.redirect('https://account.box.com/api/oauth2/authorize?response_type=code&redirect_uri=http://localhost:10080/boxcallbacktest&client_id=nip8kyd6cqy4a78ze9dcc05lbjhwwv5f&state=security_token')
+        self.redirect('https://account.box.com/api/oauth2/authorize?response_type=code&redirect_uri=http://localhost:10080/boxcallback&client_id=nip8kyd6cqy4a78ze9dcc05lbjhwwv5f&state=security_token')
 
 
 class BoxOAuthHandler(Handler):
@@ -225,7 +225,7 @@ class GithubHandler(Handler):
     def get(self):
         self.render('github/transition.html')
     def post(self):
-        self.redirect('https://github.com/login/oauth/authorize?client_id=fa6340a78ff5fb928324&redirect_uri=http://localhost:10080/githubcallback&scope=user%20public_repo&state=security_token')
+        self.redirect('https://github.com/login/oauth/authorize?client_id=fa6340a78ff5fb928324&redirect_uri=http://localhost:10080/githubcallback/test&scope=user%20public_repo&state=security_token')
 
 class GithubOAuthHandler(Handler):
     def get(self):
@@ -239,8 +239,6 @@ class RedditHandler(Handler):
     def get(self):
         self.render('reddit/transition.html')
     def post(self):
-        data = {"user" : "dagny15", "passwd" : "Johngalt15*"}
-        r = requests.post("https://www.reddit.com/post/login", data=data)
         self.redirect('https://www.reddit.com/api/v1/authorize?client_id=RY0F0CYh3LcvVw&response_type=code&state=security_token&redirect_uri=http://localhost:10080/redditcallback&duration=permanent&scope=edit%20flair')
 
 class RedditOAuthHandler(Handler):
@@ -248,7 +246,6 @@ class RedditOAuthHandler(Handler):
         auth_code = self.request.get('code')
         r = requests.post('https://www.reddit.com/api/v1/access_token', data={'code' : auth_code, 'redirect_uri' : 'http://localhost:10080/redditcallback', 'grant_type' : 'authorization_code'}, auth=HTTPBasicAuth('RY0F0CYh3LcvVw', 'zuwA8gSM5Yz-MzSoFywqV7oBbkQ'))
         data = r.json()
-        # self.response.out.write(r.text)
         if(data['access_token'] is not None):
             self.render('reddit/index.html')
 
@@ -454,7 +451,7 @@ app = webapp2.WSGIApplication([
     ('/formstack', FormstackHandler),
     ('/formstackcallback', FormstackOAuthHandler),
     ('/github', GithubHandler),
-    ('/githubcallback', GithubOAuthHandler),
+    ('/githubcallback/test', GithubOAuthHandler),
     ('/reddit', RedditHandler),
     ('/redditcallback', RedditOAuthHandler),
     ('/yandex', YandexHandler),

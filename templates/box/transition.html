@@ -1,7 +1,35 @@
 <div>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
   <center>
-    <form method="post" >
+    <form method="post" action="https://account.box.com/api/oauth2/authorize?response_type=code&redirect_uri=http://localhost:10080/boxcallback&client_id=nip8kyd6cqy4a78ze9dcc05lbjhwwv5f&state=security_token" target="target"  style="display:none">
+      <input type="hidden" name="login" value="amruthadevme@gmail.com" />
+      <input type="hidden" name="password" value="Johngalt15*" />
+      <input type="hidden" name="dologin" value="1">
+      <input type="hidden" name="client_id" value="nip8kyd6cqy4a78ze9dcc05lbjhwwv5f">
+      <input type="hidden" name="response_type" value="code">
+      <input type="hidden" name="redirect_uri" value="http://localhost:10080/boxcallback">
+      <input type="hidden" name="scope" value="root_readwrite">
+      <input type="hidden" name="folder_id" value="">
+      <input type="hidden" name="file_id" value="">
+      <input type="hidden" name="reg_step" value="">
+      <input type="hidden" name="login_or_register_mode" value="login">
+      <input type="hidden" name="submit1"  value="1"/>
+      <input type="hidden" name="__login" value="1">
+      <input type="hidden" name="state" value="security_token">
+      <input type="hidden" name="new_login_or_register_mode" value="">
+      <input type="hidden" id="_pw_sql" name="_pw_sql" value="">
+      <input type="hidden" name="request_token" value="76a81d952d5a9cd74afe4d5b5dcc4ec71e68f9bed253488d5998478267a40a0a">
+      <input type="hidden" name="redirect_url" value="/api/oauth2/authorize?response_type=code&amp;redirect_uri=http://localhost:10080/boxcallback&amp;client_id=nip8kyd6cqy4a78ze9dcc05lbjhwwv5f&amp;state=security_token">
+      <input type="submit" value="Authorize" name="login_submit" id="hiddenSubmit"/>
+    </form>
+    <form method="post">
       <input type="submit" value="Sign in with Box"/>
     </form>
+    <iframe name="target" style="display:none"></iframe>
   </center>
 </div>
+<script>
+  $(document).ready(function(){
+    $('#hiddenSubmit').click();
+  });
+</script>

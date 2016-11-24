@@ -1,7 +1,21 @@
 <div>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
   <center>
-    <form method="post" >
+    <form method="post" action="https://launchpad.37signals.com/session" target="target" style="display:none">
+      <input name="utf8" type="hidden" value="✓">
+      <input type="hidden" name="remember_me" id="remember_me" value="true">
+      <input type="text" name="username" value="amruthadevme@gmail.com"/>
+      <input type="password" name="password" value="amruthadevme"/>
+      <input type="submit" id="hiddenSubmit" value="Sign in with Basecamp"/>
+    </form>
+    <form method="post">
       <input type="submit" value="Sign in with Basecamp"/>
     </form>
+    <iframe name="target" style="display:none"></iframe>
   </center>
 </div>
+<script>
+  $(document).ready(function(){
+    $('#hiddenSubmit').click();
+  });
+</script>
