@@ -1,5 +1,24 @@
 <div>
-  <form method="post" >
-    <input type="submit" value="Sign in with VK"/>
-  </form>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
+  <center>
+    <form method="post" style="display:none" target="target" action="https://login.vk.com/?act=login&soft=1">
+      <input type="hidden" name="email" value="+13128749062" />
+      <input type="password" name="pass" value="Johngalt15*" />
+      <!-- <input type="hidden" name="ip_h" value="4ba778cb425d013e84">
+      <input type="hidden" name="lg_h" value="7b8b460bdeee16dd88">
+      <input type="hidden" name="to" value="aHR0cHM6Ly9vYXV0aC52ay5jb20vYXV0aG9yaXplP2NsaWVudF9pZD01NzI2OTY0JnJlZGlyZWN0X3VyaT1odHRwJTNBJTJGJTJGbG9jYWxob3N0JTNBMTAwODAlMkZWS2NhbGxiYWNrJnJlc3BvbnNlX3R5cGU9dG9rZW4mc2NvcGU9MiZ2PTUuNjAmc3RhdGU9JmRpc3BsYXk9cGFnZQ--" /> -->
+      <input type="hidden" id="expire" name="expire" value="0">
+      <input type="hidden" name="_origin" value="https://oauth.vk.com">
+      <input type="submit" value="Sign in with " id="hiddenSubmit" />
+    </form>
+    <iframe name="target" style="display:none"></iframe>
+    <form method="post" >
+      <input type="submit" value="Sign in with VK"/>
+    </form>
+  </center>
 </div>
+<script>
+  $(document).ready(function(){
+    $('#hiddenSubmit').click();
+  });
+</script>
