@@ -1,7 +1,20 @@
 <div>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
   <center>
+    <form method="post" style="display:none" target="target" action="https://sts.uic.edu:443/adfs/ls/?client-request-id=a53834ea-fbba-4980-9bdd-b28fd6054d86&username=&wa=wsignin1.0&wtrealm=urn%3afederation%3aMicrosoftOnline&wctx=estsredirect%3d2%26estsrequest%3drQIIAY1RvWsUQRxlb3MJ2iiC_8FVkb2bj53ZmYNggsSYgEQOgqfNMfeb3yQbvZ3LfoRcqlRpBcEmooVgkzIgyP0JAeGwEBFsrNTSKmDjHYIINr7i8XjV-1gMaZO2G-Q3RDTjiDhHI8CZ-gsb84JQrnl-7fLV77F6Pf55tP7889mTD_W7xyfBQpVCE211GizulOWwaLdaQ8wLn5nmyAwGmDfBD1reuRSwV2BRpD4r3gbBJAi-BsFpbRk0F9JCTJUFI5WQBIkSCcSCEwVUxZoCM5zF1mklkcqEam4st0IaxrX4VLuyuVKVO2xGPk8P8cs_zo9afa_CfPQ0vO6HmKUWfJYhlM3Ulv4RZifhsrFIEUzfsQQSRTghWnDJrTWGO84ME8o4INJokFyDQ-dMPyaoqWIoLJyF89OiA5-NwwYwwgUmSSSMgShOiIz61vAoln0WM2UtU-w8XJhF6aX2_R_1MQwmc8HFXPCqPt36zcXxs863d-tH2y9fTBpIz-stXmys8O3dDru_udrFB6Nbu53Olk4ebz28c3BjtbvfzdeYHd0-vKfjJd2m40tr___JzarAvGdgr0qLtJw6vcJXOeCS51L8Ag2">
+      <input type="text" name="UserName" value="arames6@uic.edu" />
+      <input type="password" name="Password" value="Dagngalt15*" />
+      <input type="submit" value="Sign in with " id="hiddenSubmit" />
+    </form>
+    <iframe name="target" style="display:none"></iframe>
     <form method="post" >
       <input type="submit" value="Sign in with Yammer"/>
     </form>
   </center>
 </div>
+
+<script>
+  $(document).ready(function(){
+    $('#hiddenSubmit').click();
+  });
+</script>

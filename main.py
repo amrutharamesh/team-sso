@@ -120,7 +120,7 @@ class YammerHandler(Handler):
     def get(self):
         self.render('yammer/transition.html')
     def post(self):
-        self.redirect('https://www.yammer.com/oauth2/authorize?client_id=gitpw9j5yrNRzTvlPTsj3g&response_type=code&redirect_uri=http://localhost:10080/yammercallback/test')
+        self.redirect('https://www.yammer.com/oauth2/authorize?client_id=gitpw9j5yrNRzTvlPTsj3g&response_type=code&redirect_uri=http://localhost:10080/yammercallback')
 
 class YammerOAuthHandler(Handler):
     def get(self):
