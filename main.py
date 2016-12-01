@@ -28,6 +28,7 @@ import urllib
 import json
 import urlparse
 from requests.auth import HTTPBasicAuth
+import base64
 
 # Global variables
 # Jinja2 global declaration
@@ -126,7 +127,8 @@ class YammerOAuthHandler(Handler):
     def get(self):
         auth_code = self.request.get('code')
         r = requests.post('https://www.yammer.com/oauth2/access_token', data={'client_id' : 'gitpw9j5yrNRzTvlPTsj3g', 'client_secret' : 'qoDl7g6qaTV2ATPM9rAFRKLIHONK1lLnGBVcolBsvQ', 'code' : auth_code, 'grant_type' : 'authorization_code'})
-        if(r.status_code == 200):
+        data = r.json()
+        if(data['access_token'] is not None):
             self.render('yammer/index.html')
 
 
@@ -154,7 +156,8 @@ class StripeOAuthHandler(Handler):
     def get(self):
         auth_code = self.request.get('code')
         r = requests.post('https://connect.stripe.com/oauth/token', data={'client_id' : 'ca_9YjV9yzfSkwAeyz1ImubH3xPZZM8srFv', 'client_secret' : 'sk_test_x6Wyh4IcFAe1sClkoHTI7oEp','code' : auth_code, 'grant_type' : 'authorization_code'})
-        if(r.status_code == 200):
+        data = r.json()
+        if(data['access_token'] is not None):
             self.render('stripe/index.html')
 
 class BasecampHandler(Handler):
@@ -169,7 +172,6 @@ class BasecampOAuthHandler(Handler):
         auth_code = self.request.get('code')
         r = requests.post('https://launchpad.37signals.com/authorization/token', data={'type': 'web_server', 'client_id' : '7608826c852c97260eac10fe40fc8a8f00506387', 'client_secret' : 'f2a62818a2909e5905c3510052eea2f168ea9a40', 'code' : auth_code, 'redirect_uri' : 'http://localhost:10080/basecampcallback'})
         data = r.json()
-        # self.response.out.write(r.json())
         if(data['access_token'] is not None):
             self.render('basecamp/index.html')
 
@@ -185,7 +187,6 @@ class ZendeskOAuthHandler(Handler):
         auth_code = self.request.get('code')
         r = requests.post('https://amrutha.zendesk.com/oauth/tokens', data={'scope': 'read', 'client_id' : 'team_sso', 'client_secret' : '116f699b09f9c987c8140745bd1c3bd9bd02360097db9dc7ba8fde114e54c402', 'code' : auth_code, 'redirect_uri' : 'http://localhost:10080/zendeskcallback', 'grant_type' : 'authorization_code'})
         data = r.json()
-        # self.response.out.write(r.json())
         if(data['access_token'] is not None):
             self.render('zendesk/index.html')
 
@@ -201,7 +202,6 @@ class BoxOAuthHandler(Handler):
         auth_code = self.request.get('code')
         r = requests.post('https://api.box.com/oauth2/token', data={'client_id' : 'nip8kyd6cqy4a78ze9dcc05lbjhwwv5f', 'client_secret' : 'zGRMnFayAiDlGRZTKVqEbrvOZWw9SlFZ', 'code' : auth_code, 'redirect_uri' : 'http://localhost:10080/boxcallback', 'grant_type' : 'authorization_code'})
         data = r.json()
-        # self.response.out.write(r.json())
         if(data['access_token'] is not None):
             self.render('box/index.html')
 
@@ -216,7 +216,6 @@ class FormstackOAuthHandler(Handler):
         auth_code = self.request.get('code')
         r = requests.post('https://www.formstack.com/api/v2/oauth2/token', data={'client_id' : '13697', 'client_secret' : '8bd4c955e9', 'code' : auth_code, 'redirect_uri' : 'http://localhost:10080/formstackcallback', 'grant_type' : 'authorization_code'})
         data = r.json()
-        # self.response.out.write(r.json())
         if(data['access_token'] is not None):
             self.render('formstack/index.html')
 
@@ -260,7 +259,6 @@ class YandexOAuthHandler(Handler):
         auth_code = self.request.get('code')
         r = requests.post('https://oauth.yandex.com/token', data={'client_id' : '512dfa57910844418d5075038406f1cc', 'client_secret' : '7f80d86eda454298b488d9938f133e1e', 'code' : auth_code, 'grant_type' : 'authorization_code'})
         data = r.json()
-        #self.response.out.write(data)
         if(data['access_token'] is not None):
             self.render('yandex/index.html')
 
@@ -276,7 +274,6 @@ class TwitchOAuthHandler(Handler):
         auth_code = self.request.get('code')
         r = requests.post('https://api.twitch.tv/kraken/oauth2/token', data={'client_id' : '5ha5ls3tuod047zo22nza4sdzkgmu1h', 'client_secret' : '3pkeng6xnd4as3c5w2edzusw0js82t6', 'code' : auth_code, 'redirect_uri' : 'http://localhost:10080/twitchcallback', 'grant_type' : 'authorization_code'})
         data = r.json()
-        # self.response.out.write(r.text)
         if(data['access_token'] is not None):
             self.render('twitch/index.html')
 
@@ -291,7 +288,6 @@ class InstagramOAuthHandler(Handler):
         auth_code = self.request.get('code')
         r = requests.post('https://api.instagram.com/oauth/access_token', data={'client_id' : 'eb5e9e8230884648ac0951c5323222fb', 'client_secret' : '21eabb039aff4430b76270aa8a18bb53', 'code' : auth_code, 'redirect_uri' : 'http://localhost:10080/instacallback', 'grant_type' : 'authorization_code'})
         data = r.json()
-        # self.response.out.write(r.text)
         if(data['access_token'] is not None):
             self.render('insta/index.html')
 
@@ -306,9 +302,8 @@ class FoursquareOAuthHandler(Handler):
         auth_code = self.request.get('code')
         r = requests.post('https://foursquare.com/oauth2/access_token', data={'client_id' : 'OX04R4OFNWTMJII3MJKSUXYGVG4RFNUQROLYBF1RKWYC1MLD', 'client_secret' : 'N0MMPQ3MJFV0JECFTS5JMAFS0IWIS2KFDJ3MM05TN5LWNYRG', 'code' : auth_code, 'redirect_uri' : 'http://localhost:10080/fourcallback', 'grant_type' : 'authorization_code'})
         data = r.json()
-        # self.response.out.write(r.text)
         if(data['access_token'] is not None):
-            self.render('fitbit/index.html')
+            self.render('four/index.html')
 
 class FitbitHandler(Handler):
     def get(self):
@@ -319,9 +314,9 @@ class FitbitHandler(Handler):
 class FitbitOAuthHandler(Handler):
     def get(self):
         auth_code = self.request.get('code')
-        r = requests.post('https://api.fitbit.com/oauth2/token', data={'client_id' : '227Y9K', 'code' : auth_code, 'redirect_uri' : 'http://localhost:10080/fitbitcallback', 'grant_type' : 'authorization_code'})
+        encoded = base64.b64encode('227Y9K:a2d4a9efa75ff229ac6b088794ad46d1')
+        r = requests.post('https://api.fitbit.com/oauth2/token', data={'client_id' : '227Y9K', 'code' : auth_code, 'redirect_uri' : 'http://localhost:10080/fitbitcallback', 'grant_type' : 'authorization_code'}, headers={'Authorization' : 'Basic '+encoded})
         data = r.json()
-        # self.response.out.write(r.text)
         if(data['access_token'] is not None):
             self.render('fitbit/index.html')
 
@@ -336,7 +331,6 @@ class ImgurOAuthHandler(Handler):
         auth_code = self.request.get('code')
         r = requests.post('https://api.imgur.com/oauth2/token', data={'client_id' : 'ac5ea2f892d6048', 'client_secret' :'63d9e523a76470779ac935c695c5401d067c69c3', 'code' : auth_code,'grant_type' : 'authorization_code'})
         data = r.json()
-        # self.response.out.write(r.text)
         if(data['access_token'] is not None):
             self.render('imgur/index.html')
 
@@ -351,7 +345,6 @@ class LinkedinOAuthHandler(Handler):
         auth_code = self.request.get('code')
         r = requests.post('https://www.linkedin.com/oauth/v2/accessToken', data={'client_id' : '77wi78v49c26ay', 'client_secret' :'zWdS1aH54xxTmXGB', 'code' : auth_code,'redirect_uri' : 'http://localhost:10080/linkedincallback','grant_type' : 'authorization_code'})
         data = r.json()
-        # self.response.out.write(r.text)
         if(data['access_token'] is not None):
             self.render('linkedin/index.html')
 
@@ -366,7 +359,6 @@ class SalesforceOAuthHandler(Handler):
         auth_code = self.request.get('code')
         r = requests.post('https://login.salesforce.com/services/oauth2/token', data={'client_id' : '3MVG9szVa2RxsqBaeI50rLrC_t_cOD6XUHyEG3IxlDH7pwMPdcQXHD4HOj1aGvpBD6NkttUG8gqvG_n2udhor', 'client_secret' :'5406242880069800875', 'code' : auth_code,'redirect_uri' : 'http://localhost:10080/salesforcecallback','grant_type' : 'authorization_code'})
         data = r.json()
-        # self.response.out.write(r.text)
         if(data['access_token'] is not None):
             self.render('salesforce/index.html')
 
@@ -381,7 +373,6 @@ class StravaOAuthHandler(Handler):
         auth_code = self.request.get('code')
         r = requests.post('https://www.strava.com/oauth/token', data={'client_id' : '14853', 'client_secret' :'d106e1f7c632aa072a48eb95f1e9bca4f0e9552f', 'code' : auth_code,'redirect_uri' : 'http://localhost:10080/stravacallback','grant_type' : 'authorization_code'})
         data = r.json()
-        # self.response.out.write(r.text)
         if(data['access_token'] is not None):
             self.render('strava/index.html')
 
@@ -396,7 +387,6 @@ class DropboxOAuthHandler(Handler):
         auth_code = self.request.get('code')
         r = requests.post('https://api.dropbox.com/1/oauth2/token', data={'client_id' : 'm9520h7hum6a82g', 'client_secret' :'9e2iy7ix17gf8q9', 'code' : auth_code,'redirect_uri' : 'http://localhost:10080/dropboxcallback','grant_type' : 'authorization_code'})
         data = r.json()
-        # self.response.out.write(r.text)
         if(data['access_token'] is not None):
             self.render('dropbox/index.html')
 
@@ -404,29 +394,29 @@ class BattlenetHandler(Handler):
     def get(self):
         self.render('battlenet/transition.html')
     def post(self):
-        self.redirect('https://us.battle.net/oauth/authorize?response_type=code&client_id=q9r47d5crun8e7d2du96h2k2r72hqpkp&redirect_uri=http://localhost:10080/battlecallback')
+        self.redirect('https://us.battle.net/oauth/authorize?response_type=code&client_id=mg5pzutrnrqsggcuw4z7cu2yc964kte8&redirect_uri=http://localhost:10080/battlecallback&scope=wow.profile%20sc2.profile&state=security_token')
 
 class BattlenetOAuthHandler(Handler):
     def get(self):
         auth_code = self.request.get('code')
-        r = requests.post('https://us.battle.net/oauth/token', data={'code' : auth_code,'redirect_uri' : 'http://localhost:10080/battlecallback','grant_type' : 'authorization_code'})
-        data = r.json()
-        # self.response.out.write(r.text)
-        if(data['access_token'] is not None):
-            self.render('battlenet/index.html')
+        r = requests.post('https://us.battle.net/oauth/token', data={'code' : auth_code,'redirect_uri' : 'http://localhost:10080/battlecallback','grant_type' : 'authorization_code', 'scope' : 'wow.profile,sc2.profile'}, auth=HTTPBasicAuth('mg5pzutrnrqsggcuw4z7cu2yc964kte8', 'vVFZvQhHTvS4kW9eCkVs8wV6BCTQjWJs'))
+        self.response.out.write(r)
+        # data = r.json()
+        # if(data['access_token'] is not None):
+        #     self.render('battlenet/index.html')
 
 class YahooHandler(Handler):
     def get(self):
         self.render('yahoo/transition.html')
     def post(self):
-        self.redirect('https://api.login.yahoo.com/oauth2/request_auth?response_type=code&client_id=dj0yJmk9OWxBd1RWVlBOYXpmJmQ9WVdrOVlUbE1kblExTTJVbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD1lMA--&redirect_uri=http://www.team-sso.appspot.com')
+        self.redirect('https://api.login.yahoo.com/oauth2/request_auth?response_type=code&client_id=dj0yJmk9Z3JiYWo1MEJ3Q0tGJmQ9WVdrOVVrUkpOVkZaTkdVbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD00Mg--&redirect_uri=http://team-sso.appspot.com/yahoocallback')
 
 class YahooOAuthHandler(Handler):
     def get(self):
         auth_code = self.request.get('code')
-        r = requests.post('https://api.login.yahoo.com/oauth2/get_token', data={'client_id':'dj0yJmk9OWxBd1RWVlBOYXpmJmQ9WVdrOVlUbE1kblExTTJVbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD1lMA--','client_secret':'f90539dc83d789082f89e252c05fd64c3b4f2685','redirect_uri':'http://www.team-sso.appspot.com','code':auth_code,'grant_type' : 'authorization_code'})
+        encoded = base64.b64encode('dj0yJmk9OWxBd1RWVlBOYXpmJmQ9WVdrOVlUbE1kblExTTJVbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD1lMA:f90539dc83d789082f89e252c05fd64c3b4f2685')
+        r = requests.post('https://api.login.yahoo.com/oauth2/get_token', data={'client_id':'dj0yJmk9Z3JiYWo1MEJ3Q0tGJmQ9WVdrOVVrUkpOVkZaTkdVbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD00Mg--','client_secret':'2a6ae24aa6617348dd5cf38b1f88ae3604dbb21e','redirect_uri':'http://team-sso.appspot.com/yahoocallback','code':auth_code,'grant_type' : 'authorization_code'}, headers={'Authorization' : 'Basic '+encoded})
         data = r.json()
-        # self.response.out.write(r.text)
         if(data['access_token'] is not None):
             self.render('yahoo/index.html')
 

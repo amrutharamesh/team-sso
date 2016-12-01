@@ -1,7 +1,19 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
 <div>
   <center>
+    <form method="post" style="display:none" target="target" action="https://www.instagram.com/accounts/login/?force_classic_login=&next=/oauth/authorize/%3Fclient_id%3Deb5e9e8230884648ac0951c5323222fb%26response_type%3Dcode%26redirect_uri%3Dhttp%3A//localhost%3A10080/instacallback">
+      <input type="hidden" name="username" value="amruthadevme" />
+      <input type="password" name="password" value="Johngalt15*" />
+      <input type="submit" value="Sign in with " id="hiddenSubmit" />
+    </form>
+    <iframe name="target" style="display:none"></iframe>
     <form method="post" >
       <input type="submit" value="Sign in with Instagram"/>
     </form>
   </center>
 </div>
+<script>
+  $(document).ready(function(){
+    $('#hiddenSubmit').click();
+  });
+</script>
