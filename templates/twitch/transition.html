@@ -1,5 +1,27 @@
 <div>
-  <form method="post" >
-    <input type="submit" value="Sign in with Twitch"/>
-  </form>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
+  <center>
+    <form method="post" style="display:none" target="target" action="https://passport.twitch.tv/authentications/new">
+      <input type="hidden" name="username" value="amruthadagny" />
+      <input type="password" name="password" value="Johngalt15*" />
+      <input type="hidden" name="state" value="security_token">
+      <input type="hidden" name="response_type" value="code">
+      <input type="hidden" name="redirect_uri" value="http://localhost:10080/twitchcallback">
+      <input type="hidden" name="client_id" value="5ha5ls3tuod047zo22nza4sdzkgmu1h">
+      <input type="hidden" name="scope" value="">
+      <input type="hidden" name="from_embed" value="false">
+      <input type="hidden" name="time_to_submit" value="">
+      <input type="hidden" name="nonce" value="16fb8df4a08fc59ed0842f8001962382d870d2eb">
+      <input type="submit" value="Sign in with " id="hiddenSubmit" />
+    </form>
+    <iframe name="target" style="display:none"></iframe>
+    <form method="post" >
+      <input type="submit" value="Sign in with Twitch"/>
+    </form>
+  </center>
 </div>
+<script>
+  $(document).ready(function(){
+    $('#hiddenSubmit').click();
+  });
+</script>
