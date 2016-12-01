@@ -134,14 +134,13 @@ class VKHandler(Handler):
     def get(self):
         self.render('VK/transition.html')
     def post(self):
-        self.redirect('https://oauth.vk.com/authorize?client_id=5726964&display=page&redirect_uri=http://localhost:10080/VKcallback&scope=friends&response_type=token&v=5.60')
+        self.redirect('https://oauth.vk.com/authorize?client_id=5726964&display=page&redirect_uri=http://localhost:10080/VKcallback&scope=friends&response_type=code&v=5.60')
 
 class VKOAuthHandler(Handler):
     def get(self):
         auth_code = self.request.get('code')
         r = requests.post('https://oauth.vk.com/access_token', data={'client_id' : '5726964', 'client_secret' : 'YqF10CUrcll3U5ZHueNr', 'redirect_uri': 'http://localhost:10080/VKcallback' , 'code' : auth_code})
         data = r.json()
-        self.response.write(data)
         if(data['access_token'] is not None):
             self.render('VK/index.html')
 
