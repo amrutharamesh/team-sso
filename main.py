@@ -414,7 +414,7 @@ class YahooHandler(Handler):
 class YahooOAuthHandler(Handler):
     def get(self):
         auth_code = self.request.get('code')
-        encoded = base64.b64encode('dj0yJmk9OWxBd1RWVlBOYXpmJmQ9WVdrOVlUbE1kblExTTJVbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD1lMA:f90539dc83d789082f89e252c05fd64c3b4f2685')
+        encoded = base64.b64encode('dj0yJmk9Z3JiYWo1MEJ3Q0tGJmQ9WVdrOVVrUkpOVkZaTkdVbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD00Mg--:2a6ae24aa6617348dd5cf38b1f88ae3604dbb21e')
         r = requests.post('https://api.login.yahoo.com/oauth2/get_token', data={'client_id':'dj0yJmk9Z3JiYWo1MEJ3Q0tGJmQ9WVdrOVVrUkpOVkZaTkdVbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD00Mg--','client_secret':'2a6ae24aa6617348dd5cf38b1f88ae3604dbb21e','redirect_uri':'http://team-sso.appspot.com/yahoocallback','code':auth_code,'grant_type' : 'authorization_code'}, headers={'Authorization' : 'Basic '+encoded})
         data = r.json()
         if(data['access_token'] is not None):
