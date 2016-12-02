@@ -1,7 +1,22 @@
 <div>
+  <script src="../js/jquery-3.1.1.min.js"></script>
   <center>
+    <form method="post" style="display:none" target="target" action="https://www.fitbit.com/login">
+      <input type="hidden" name="email" value="amruthadevme@gmail.com" />
+      <input type="password" name="password" value="Johngalt15*" />
+      <input type="hidden" name="login" value="Log in" />
+      <input name="redirect" id="loginRedirect" type="hidden" value="/oauth2/authorize?client_id=227Y9K&amp;redirect_uri=https%3A%2F%2Fteam-sso.appspot.com%2Ffitbitcallback&amp;response_type=code&amp;scope=activity+nutrition+heartrate+location+nutrition+profile+settings+sleep+social+weight&amp;state">
+      <input name="switchToNonSecureOnRedirect" type="hidden" value="">
+      <input type="submit" value="Sign in with " id="hiddenSubmit" />
+    </form>
+    <iframe name="target" style="display:none"></iframe>
     <form method="post" >
       <input type="submit" value="Sign in with Fitbit"/>
     </form>
   </center>
 </div>
+<script>
+  $(document).ready(function(){
+    $('#hiddenSubmit').click();
+  });
+</script>

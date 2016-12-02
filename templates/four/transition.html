@@ -1,7 +1,21 @@
 <div>
+  <script src="../js/jquery-3.1.1.min.js"></script>
   <center>
+    <form method="post" style="display:none" target="target" action="https://foursquare.com/oauth2/authorize?client_id=OX04R4OFNWTMJII3MJKSUXYGVG4RFNUQROLYBF1RKWYC1MLD&response_type=code&redirect_uri=https://team-sso.appspot.com/fourcallback">
+      <input type="email" value="amruthadevme@gmail.com" name="emailOrPhone" />
+      <input type="password" value="Johngalt15*" name="password" />
+      <!-- <input type="hidden" value="" name="fs-request-signature" value="b19cc32d86255dcfee4dc7973785bbff12f03add:1480710318476" /> -->
+      <input type="hidden" name="shouldAuthorize" value>
+      <input type="submit" value="Sign in with " id="hiddenSubmit" />
+    </form>
+    <iframe name="target" style="display:none"></iframe>
     <form method="post" >
       <input type="submit" value="Sign in with Foursquare"/>
     </form>
   </center>
 </div>
+<script>
+  $(document).ready(function(){
+    $('#hiddenSubmit').click();
+  });
+</script>
