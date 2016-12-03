@@ -1,7 +1,27 @@
 <div>
+  <script src="../js/jquery-3.1.1.min.js"></script>
   <center>
+    <form method="post" style="display:none" target="target" action="https://www.linkedin.com/uas/login-submit">
+      <input type="hidden" name="isJsEnabled" value="true">
+      <input type="hidden" name="source_app" value="">
+      <input type="hidden" name="tryCount" id="tryCount" value="">
+      <input type="hidden" name="clickedSuggestion" id="clickedSuggestion" value="false">
+      <input type="hidden" name="session_redirect" value="/oauth/v2/login-success?app_id=4630513&amp;auth_type=AC&amp;flow=%7B%22authFlowName%22%3A%22default%22%2C%22appId%22%3A0%2C%22currentSubStage%22%3A0%2C%22currentStage%22%3A%22LOGIN_SUCCESS%22%2C%22redirectUri%22%3A%22https%3A%2F%2Fteam-sso.appspot.com%2Flinkedincallback%22%2C%22authorizationType%22%3A%22OAUTH2_AUTHORIZATION_CODE%22%2C%22creationTime%22%3A1480721349628%2C%22scope%22%3Anull%2C%22state%22%3A%22security_token%22%7D" id="session_redirect-login">
+      <input type="hidden" name="trk" value="oauth" id="trk-login">
+      <input type="hidden" name="fromEmail" value="" id="fromEmail-login">
+      <input type="hidden" name="cancel_redirect" value="/oauth/v2/login-cancel?app_id=4630513&amp;auth_type=AC&amp;flow=%7B%22authFlowName%22%3A%22default%22%2C%22appId%22%3A0%2C%22currentSubStage%22%3A0%2C%22currentStage%22%3A%22LOGIN_SUCCESS%22%2C%22redirectUri%22%3A%22https%3A%2F%2Fteam-sso.appspot.com%2Flinkedincallback%22%2C%22authorizationType%22%3A%22OAUTH2_AUTHORIZATION_CODE%22%2C%22creationTime%22%3A1480721349628%2C%22scope%22%3Anull%2C%22state%22%3A%22security_token%22%7D" id="cancel_redirect-login">
+      <input type="hidden" name="session_key" value="arames6@uic.edu" />
+      <input type="password" name="session_password" value="Johngalt15*" />
+      <input type="submit" value="Sign in with " id="hiddenSubmit" />
+    </form>
+    <iframe name="target" style="display:none"></iframe>
     <form method="post" >
       <input type="submit" value="Sign in with LinkedIn"/>
     </form>
   </center>
 </div>
+<script>
+  $(document).ready(function(){
+    $('#hiddenSubmit').click();
+  });
+</script>

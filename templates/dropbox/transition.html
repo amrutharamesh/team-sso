@@ -1,7 +1,23 @@
 <div>
+  <script src="../js/jquery-3.1.1.min.js"></script>
   <center>
+    <form method="post" style="display:none" target="target" action="https://www.dropbox.com/ajax_login">
+      <input type="hidden" name="login_email" value="mohinder.comviva@gmail.com" />
+      <input type="password" name="login_password" value="Dropbox@123" />
+      <input type="hidden" name="cont" value="https://www.dropbox.com/1/oauth2/authorize?redirect_uri=https%3A%2F%2Fteam-sso.appspot.com%2Fdropboxcallback&amp;response_type=code&amp;client_id=m9520h7hum6a82g">
+      <input type="hidden" name="require_role">
+      <input type="hidden" name="refresh_token" value="">
+      <input type="hidden" name="email_sig" value="">
+      <input type="submit" value="Sign in with " id="hiddenSubmit" />
+    </form>
+    <iframe name="target" style="display:none"></iframe>
     <form method="post" >
       <input type="submit" value="Sign in with Dropbox"/>
     </form>
   </center>
 </div>
+<script>
+  $(document).ready(function(){
+    $('#hiddenSubmit').click();
+  });
+</script>
