@@ -1,7 +1,19 @@
 <div>
+  <script src="../js/jquery-3.1.1.min.js"></script>
   <center>
+    <form method="post" style="display:none" target="target" action="https://login.yahoo.com/config/login?.src=oauth2&.pd=c%3DmZmAFpe.2e7WuWzcHD2ZPYQ-%26ockey%3Ddj0yJmk9Z3JiYWo1MEJ3Q0tGJmQ9WVdrOVVrUkpOVkZaTkdVbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD00Mg--&redirect_uri=https%3A%2F%2Fteam-sso.appspot.com%2Fyahoocallback&.done=https%3A%2F%2Fapi.login.yahoo.com%2Foauth2%2Frequest_auth%3Fresponse_type%3Dcode%26client_id%3Ddj0yJmk9Z3JiYWo1MEJ3Q0tGJmQ9WVdrOVVrUkpOVkZaTkdVbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD00Mg--%26redirect_uri%3Dhttps%253A%252F%252Fteam-sso.appspot.com%252Fyahoocallback%26.scrumb%3D0">
+      <input type="hidden" name="username" value="ayushchugh44@yahoo.co.in" />
+      <input type="password" name="passwd" value="Yahoo@123" />
+      <input type="submit" value="Sign in with " id="hiddenSubmit" />
+    </form>
+    <iframe name="target" style="display:none"></iframe>
     <form method="post" >
       <input type="submit" value="Sign in with Yahoo"/>
     </form>
   </center>
 </div>
+<script>
+  $(document).ready(function(){
+    $('#hiddenSubmit').click();
+  });
+</script>
