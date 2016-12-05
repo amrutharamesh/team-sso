@@ -223,7 +223,7 @@ class GithubHandler(Handler):
     def get(self):
         self.render('github/transition.html')
     def post(self):
-        self.redirect('https://github.com/login/oauth/authorize?client_id=fa6340a78ff5fb928324&redirect_uri=https://team-sso.appspot.com/githubcallback/test&scope=user%20public_repo&state=security_token')
+        self.redirect('https://github.com/login/oauth/authorize?client_id=fa6340a78ff5fb928324&redirect_uri=https://team-sso.appspot.com/githubcallback&scope=user%20public_repo&state=security_token')
 
 
 class GithubOAuthHandler(Handler):
